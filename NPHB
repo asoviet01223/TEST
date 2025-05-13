@@ -4,15 +4,7 @@ ReplicatedStorage = game.ReplicatedStorage
 GrabEvents = ReplicatedStorage:WaitForChild("GrabEvents")
 ExtendGrabLine = (GrabEvents) and GrabEvents:FindFirstChild("ExtendGrabLine")
 deb = false
-Whitelist = {
-    "SaviorLiberty",
-    "DefyEventHelper1",
-    "DefyEventHelper2",
-    "Defiant_Alt",
-    "R0tationCurveKey",
-    "R0tationCurve",
-
-}
+Whitelist = {TSB_01223}
 local FindMatch = function(Name)
 	Name = Name:lower()
 	for _, Player in Players:GetPlayers() do
