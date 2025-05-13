@@ -118,6 +118,8 @@ if isfile(path) then luav = dofile(path)() else
 local data = game:HttpGet("https://raw.githubusercontent.com/Undebolted/FTAP/refs/heads/main/LuaV%20WP")
 task.defer(writefile, path, data); luav = loadstring(data)() end end; path = nil
 
+LuaV = luav
+
 local rbxanls = game:GetService("RbxAnalyticsService")
 local placeid = game.PlaceId
 local jobid = game.JobId
